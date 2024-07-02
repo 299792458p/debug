@@ -178,7 +178,7 @@ function setup(env) {
 
 			namespaces = split[i].replace(/\*/g, '.*?');
 
-			if (namespaces[0] === '-') {
+			if (namespaces.startsWith('-')) {
 				createDebug.skips.push(new RegExp('^' + namespaces.slice(1) + '$'));
 			} else {
 				createDebug.names.push(new RegExp('^' + namespaces + '$'));
@@ -209,7 +209,7 @@ function setup(env) {
 	* @api public
 	*/
 	function enabled(name) {
-		if (name[name.length - 1] === '*') {
+		if (name.endsWith('*')) {
 			return true;
 		}
 
