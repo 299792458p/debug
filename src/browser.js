@@ -15,7 +15,9 @@ exports.destroy = (() => {
 	return () => {
 		if (!warned) {
 			warned = true;
-			console.warn('Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.');
+			console.warn(
+				'Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.'
+			);
 		}
 	};
 })();
@@ -100,7 +102,7 @@ exports.colors = [
 	'#FF9900',
 	'#FF9933',
 	'#FFCC00',
-	'#FFCC33'
+	'#FFCC33',
 ];
 
 /**
@@ -116,25 +118,43 @@ function useColors() {
 	// NB: In an Electron preload script, document will be defined but not fully
 	// initialized. Since we know we're in Chrome, we'll just detect this case
 	// explicitly
-	if (typeof window !== 'undefined' && window.process && (window.process.type === 'renderer' || window.process.__nwjs)) {
+	if (
+		typeof window !== 'undefined' &&
+		window.process &&
+		(window.process.type === 'renderer' || window.process.__nwjs)
+	) {
 		return true;
 	}
 
 	// Internet Explorer and Edge do not support colors.
-	if (typeof navigator !== 'undefined' && RegExp(/(edge|trident)\/(\d+)/).exec(navigator.userAgent?.toLowerCase())) {
+	if (
+		typeof navigator !== 'undefined' &&
+		RegExp(/(edge|trident)\/(\d+)/).exec(navigator.userAgent?.toLowerCase())
+	) {
 		return false;
 	}
 
 	// Is webkit? http://stackoverflow.com/a/16459606/376773
 	// document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
-	return (typeof document !== 'undefined' && document.documentElement.style?.WebkitAppearance) ||
+	return (
+		(typeof document !== 'undefined' &&
+			document.documentElement.style?.WebkitAppearance) ||
 		// Is firebug? http://stackoverflow.com/a/398120/376773
-		(typeof window !== 'undefined' && window.console && (window.console.firebug || (window.console.exception && window.console.table))) ||
+		(typeof window !== 'undefined' &&
+			window.console &&
+			(window.console.firebug ||
+				(window.console.exception && window.console.table))) ||
 		// Is firefox >= v31?
 		// https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
-		(typeof navigator !== 'undefined' && RegExp(/firefox\/(\d+)/).exec(navigator.userAgent?.toLowerCase()) && parseInt(RegExp.$1, 10) >= 31) ||
+		(typeof navigator !== 'undefined' &&
+			RegExp(/firefox\/(\d+)/).exec(navigator.userAgent?.toLowerCase()) &&
+			parseInt(RegExp.$1, 10) >= 31) ||
 		// Double check webkit in userAgent just in case we are in a worker
-		(typeof navigator !== 'undefined' && RegExp(/applewebkit\/(\d+)/).exec(navigator.userAgent?.toLowerCase()));
+		(typeof navigator !== 'undefined' &&
+			RegExp(/applewebkit\/(\d+)/).exec(
+				navigator.userAgent?.toLowerCase()
+			))
+	);
 }
 
 /**
@@ -144,12 +164,14 @@ function useColors() {
  */
 
 function formatArgs(args) {
-	args[0] = (this.useColors ? '%c' : '') +
+	args[0] =
+		(this.useColors ? '%c' : '') +
 		this.namespace +
 		(this.useColors ? ' %c' : ' ') +
 		args[0] +
 		(this.useColors ? '%c ' : ' ') +
-		'+' + module.exports.humanize(this.diff);
+		'+' +
+		module.exports.humanize(this.diff);
 
 	if (!this.useColors) {
 		return;
@@ -163,7 +185,7 @@ function formatArgs(args) {
 	// figure out the correct index to insert the CSS into
 	let index = 0;
 	let lastC = 0;
-	args[0].replace(/%[a-zA-Z%]/g, match => {
+	args[0].replace(/%[a-zA-Z%]/g, (match) => {
 		if (match === '%%') {
 			return;
 		}
@@ -254,7 +276,7 @@ function localstorage() {
 
 module.exports = require('./common')(exports);
 
-const {formatters} = module.exports;
+const { formatters } = module.exports;
 
 /**
  * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.
